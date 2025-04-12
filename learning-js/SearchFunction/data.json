@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "phone": "+1-202-555-0171",
+    "address": "123 Maple Street, Springfield, IL",
+    "job": "Software Engineer"
+  },
+  {
+    "name": "Michael Smith",
+    "email": "michael.smith@example.com",
+    "phone": "+1-202-555-0183",
+    "address": "456 Oak Avenue, Chicago, IL",
+    "job": "Project Manager"
+  },
+  {
+    "name": "Samantha Lee",
+    "email": "samantha.lee@example.com",
+    "phone": "+1-202-555-0199",
+    "address": "789 Pine Road, Denver, CO",
+    "job": "UX Designer"
+  },
+  {
+    "name": "Daniel Brown",
+    "email": "daniel.brown@example.com",
+    "phone": "+1-202-555-0122",
+    "address": "321 Birch Blvd, Miami, FL",
+    "job": "Marketing Analyst"
+  },
+  {
+    "name": "Olivia Davis",
+    "email": "olivia.davis@example.com",
+    "phone": "+1-202-555-0165",
+    "address": "654 Cedar Street, Seattle, WA",
+    "job": "Product Manager"
+  },
+  {
+    "name": "James Wilson",
+    "email": "james.wilson@example.com",
+    "phone": "+1-202-555-0138",
+    "address": "987 Elm Drive, Boston, MA",
+    "job": "DevOps Engineer"
+  },
+  {
+    "name": "Emma Garcia",
+    "email": "emma.garcia@example.com",
+    "phone": "+1-202-555-0105",
+    "address": "135 Willow Lane, Austin, TX",
+    "job": "Data Scientist"
+  },
+  {
+    "name": "Benjamin Martinez",
+    "email": "ben.martinez@example.com",
+    "phone": "+1-202-555-0144",
+    "address": "246 Aspen Way, San Diego, CA",
+    "job": "Systems Administrator"
+  },
+  {
+    "name": "Isabella Anderson",
+    "email": "isabella.anderson@example.com",
+    "phone": "+1-202-555-0155",
+    "address": "369 Redwood Terrace, Portland, OR",
+    "job": "HR Manager"
+  },
+  {
+    "name": "Logan Thomas",
+    "email": "logan.thomas@example.com",
+    "phone": "+1-202-555-0179",
+    "address": "741 Sycamore Court, Phoenix, AZ",
+    "job": "Business Analyst"
+  },
+  {
+    "name": "Ava Taylor",
+    "email": "ava.taylor@example.com",
+    "phone": "+1-202-555-0160",
+    "address": "852 Fir Loop, Atlanta, GA",
+    "job": "Sales Executive"
+  },
+  {
+    "name": "Elijah Moore",
+    "email": "elijah.moore@example.com",
+    "phone": "+1-202-555-0192",
+    "address": "963 Spruce Drive, Dallas, TX",
+    "job": "Graphic Designer"
+  },
+  {
+    "name": "Mia Jackson",
+    "email": "mia.jackson@example.com",
+    "phone": "+1-202-555-0117",
+    "address": "159 Palm Street, Tampa, FL",
+    "job": "Content Strategist"
+  },
+  {
+    "name": "William Martin",
+    "email": "william.martin@example.com",
+    "phone": "+1-202-555-0187",
+    "address": "753 Olive Lane, Minneapolis, MN",
+    "job": "Network Engineer"
+  },
+  {
+    "name": "Charlotte White",
+    "email": "charlotte.white@example.com",
+    "phone": "+1-202-555-0128",
+    "address": "258 Magnolia Drive, Sacramento, CA",
+    "job": "Technical Writer"
+  },
+  {
+    "name": "Henry Harris",
+    "email": "henry.harris@example.com",
+    "phone": "+1-202-555-0159",
+    "address": "357 Larch Street, Raleigh, NC",
+    "job": "IT Consultant"
+  },
+  {
+    "name": "Amelia Clark",
+    "email": "amelia.clark@example.com",
+    "phone": "+1-202-555-0189",
+    "address": "468 Cypress Court, Kansas City, MO",
+    "job": "Social Media Manager"
+  },
+  {
+    "name": "Alexander Rodriguez",
+    "email": "alex.rodriguez@example.com",
+    "phone": "+1-202-555-0173",
+    "address": "579 Dogwood Trail, Columbus, OH",
+    "job": "Cloud Architect"
+  },
+  {
+    "name": "Sophia Lewis",
+    "email": "sophia.lewis@example.com",
+    "phone": "+1-202-555-0194",
+    "address": "681 Poplar Lane, Nashville, TN",
+    "job": "Recruiter"
+  },
+  {
+    "name": "Liam Walker",
+    "email": "liam.walker@example.com",
+    "phone": "+1-202-555-0119",
+    "address": "792 Chestnut Road, Indianapolis, IN",
+    "job": "Frontend Developer"
+  }
+]
