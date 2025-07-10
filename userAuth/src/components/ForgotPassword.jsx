@@ -10,12 +10,37 @@ export default function ForgotPassword() {
         e.preventDefault();
         setIsLoading(true);
 
-        // Simulate API call
+        // TODO: Replace with Flask API call - POST /api/forgot-password
+        // try {
+        //     const response = await fetch('/api/forgot-password', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({ email })
+        //     });
+        //
+        //     const result = await response.json();
+        //
+        //     if (response.ok) {
+        //         setIsSubmitted(true);
+        //     } else {
+        //         // Handle error (user not found, etc.)
+        //         console.error('Password reset failed:', result.message);
+        //         setIsSubmitted(true); // Still show success for security
+        //     }
+        // } catch (error) {
+        //     console.error('Network error:', error);
+        //     setIsSubmitted(true); // Show success even on error for security
+        // } finally {
+        //     setIsLoading(false);
+        // }
+
+        // TEMPORARY: Simulate Flask API response (remove when Flask is implemented)
         setTimeout(() => {
             console.log('Password reset requested for:', email);
             setIsSubmitted(true);
             setIsLoading(false);
-            // Add your password reset logic here
         }, 1500);
     };
 

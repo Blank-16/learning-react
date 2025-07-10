@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import authData from '../../auth.json';
 
 export default function Register() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         fullName: '',
         username: '',
@@ -9,23 +11,135 @@ export default function Register() {
         password: '',
         confirmPassword: ''
     });
+    const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
+        // Clear specific field error when user starts typing
+        if (errors[e.target.name]) {
+            setErrors({
+                ...errors,
+                [e.target.name]: ''
+            });
+        }
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        // TODO: Replace with Flask API call - POST /api/validate-user
+        // const response = await fetch('/api/validate-user', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ email: formData.email, username: formData.username })
+        // });
+        // const validation = await response.json();
+
+        // For now, check against auth.json (will be replaced by Flask validation)
+        const existingUsers = authData.users;
+
+        // Check if email already exists
+        const emailExists = existingUsers.find(user => user.email === formData.email);
+        if (emailExists) {
+            newErrors.email = 'An account with this email already exists';
+        }
+
+        // Check if username already exists
+        const usernameExists = existingUsers.find(user => user.username === formData.username);
+        if (usernameExists) {
+            newErrors.username = 'This username is already taken';
+        }
+
+        // Password confirmation check
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match';
+        }
+
+        // Password strength check
+        if (formData.password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters long';
+        }
+
+        return newErrors;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match!');
+        setIsLoading(true);
+        setErrors({});
+
+        // Validate form
+        const formErrors = validateForm();
+
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors);
+            setIsLoading(false);
             return;
         }
-        console.log('Register form submitted:', formData);
-        // Add your registration logic here
-    }; return (
+
+        // TODO: Replace with Flask API call - POST /api/register
+        // try {
+        //     const response = await fetch('/api/register', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             fullName: formData.fullName,
+        //             username: formData.username,
+        //             email: formData.email,
+        //             password: formData.password
+        //         })
+        //     });
+        //
+        //     const result = await response.json();
+        //
+        //     if (response.ok) {
+        //         // Store JWT token or session data from Flask
+        //         localStorage.setItem('authToken', result.token);
+        //         localStorage.setItem('currentUser', JSON.stringify(result.user));
+        //         navigate('/dashboard', { replace: true });
+        //     } else {
+        //         setErrors({ general: result.message || 'Registration failed' });
+        //     }
+        // } catch (error) {
+        //     setErrors({ general: 'Network error. Please try again.' });
+        // } finally {
+        //     setIsLoading(false);
+        // }
+
+        // TEMPORARY: Simulate Flask API response (remove when Flask is implemented)
+        setTimeout(() => {
+            const newUser = {
+                email: formData.email,
+                username: formData.username,
+                password: formData.password,
+                fullName: formData.fullName
+            };
+
+            // Simulate adding to JSON file (Flask will handle database operations)
+            authData.users.push(newUser);
+
+            // Simulate Flask login response with user session
+            localStorage.setItem('currentUser', JSON.stringify({
+                email: newUser.email,
+                username: newUser.username,
+                fullName: newUser.fullName
+            }));
+
+            console.log('Registration successful:', newUser);
+            console.log('About to navigate to /dashboard');
+
+            navigate('/dashboard', { replace: true });
+            setIsLoading(false);
+        }, 1500);
+    };
+
+    return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 flex items-center justify-center p-4">
             <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/50 w-full max-w-md p-8">
 
@@ -70,9 +184,13 @@ export default function Register() {
                             value={formData.username}
                             onChange={handleChange}
                             placeholder="Choose a username"
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900"
+                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900 ${errors.username ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-emerald-400'
+                                }`}
                             required
                         />
+                        {errors.username && (
+                            <p className="text-red-600 text-sm mt-1">{errors.username}</p>
+                        )}
                     </div>
 
                     <div>
@@ -86,9 +204,13 @@ export default function Register() {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Enter your email address"
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900"
+                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900 ${errors.email ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-emerald-400'
+                                }`}
                             required
                         />
+                        {errors.email && (
+                            <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+                        )}
                     </div>
 
                     <div>
@@ -102,9 +224,13 @@ export default function Register() {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Create a strong password"
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900"
+                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900 ${errors.password ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-emerald-400'
+                                }`}
                             required
                         />
+                        {errors.password && (
+                            <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+                        )}
                     </div>
 
                     <div>
@@ -118,16 +244,28 @@ export default function Register() {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             placeholder="Confirm your password"
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900"
+                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200 hover:border-gray-300 text-gray-900 ${errors.confirmPassword ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-emerald-400'
+                                }`}
                             required
                         />
+                        {errors.confirmPassword && (
+                            <p className="text-red-600 text-sm mt-1">{errors.confirmPassword}</p>
+                        )}
                     </div>
 
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        disabled={isLoading}
+                        className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     >
-                        Create Account
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Creating Account...
+                            </div>
+                        ) : (
+                            'Create Account'
+                        )}
                     </button>
                 </form>
 

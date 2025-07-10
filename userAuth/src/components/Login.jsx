@@ -1,23 +1,84 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import authData from '../../auth.json';
 
 export default function Login() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
+        // Clear error when user starts typing
+        if (error) {
+            setError('');
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Login form submitted:', formData);
-        // Add your login logic here
+        setIsLoading(true);
+        setError('');
+
+        // TODO: Replace with Flask API call - POST /api/login
+        // try {
+        //     const response = await fetch('/api/login', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             email: formData.email,
+        //             password: formData.password
+        //         })
+        //     });
+        //
+        //     const result = await response.json();
+        //
+        //     if (response.ok) {
+        //         // Store JWT token and user data from Flask
+        //         localStorage.setItem('authToken', result.token);
+        //         localStorage.setItem('currentUser', JSON.stringify(result.user));
+        //         navigate('/dashboard');
+        //     } else {
+        //         setError(result.message || 'Invalid email or password. Please try again.');
+        //     }
+        // } catch (error) {
+        //     setError('Network error. Please try again.');
+        // } finally {
+        //     setIsLoading(false);
+        // }
+
+        // TEMPORARY: Simulate Flask API response (remove when Flask is implemented)
+        setTimeout(() => {
+            // Find user in auth.json (Flask will query database)
+            const user = authData.users.find(
+                u => u.email === formData.email && u.password === formData.password
+            );
+
+            if (user) {
+                // Simulate Flask response with user session data
+                localStorage.setItem('currentUser', JSON.stringify({
+                    email: user.email,
+                    username: user.username,
+                    fullName: user.fullName || user.username
+                }));
+
+                console.log('Login successful:', user);
+                navigate('/dashboard');
+            } else {
+                setError('Invalid email or password. Please try again.');
+            }
+
+            setIsLoading(false);
+        }, 1000);
     };
 
     return (
@@ -37,6 +98,13 @@ export default function Login() {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Error Message */}
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                            <p className="text-red-700 text-sm text-center">{error}</p>
+                        </div>
+                    )}
+
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                             Email Address
@@ -72,11 +140,29 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        disabled={isLoading}
+                        className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     >
-                        Sign In
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Signing In...
+                            </div>
+                        ) : (
+                            'Sign In'
+                        )}
                     </button>
                 </form>
+
+                {/* Test Credentials Info */}
+                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-blue-800 text-sm text-center mb-2">
+                        <strong>💡 Demo Credentials:</strong>
+                    </p>
+                    <p className="text-blue-700 text-xs text-center">
+                        Try: <strong>john.doe@example.com</strong> / <strong>password123</strong>
+                    </p>
+                </div>
 
                 {/* OR Divider */}
                 <div className="flex items-center my-8">
