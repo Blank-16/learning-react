@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, NavLink} from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 
 // link is used in place of a tag
@@ -38,9 +38,9 @@ export default function Header() {
                         <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                             <li>
                                 <NavLink
-                                to="/"
-                                // using callbacks for classname to manipulate the classes inside callback..
-                                    className={({isActive}) =>
+                                    to="/"
+                                    // using callbacks for classname to manipulate the classes inside callback..
+                                    className={({ isActive }) =>
                                         `block py-2 pr-4 pl-3 duration-200 ${isActive ? "text-orange-700" : "text-gray-700"} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
                                     }
                                 >
@@ -50,15 +50,37 @@ export default function Header() {
 
                             <li>
                                 <NavLink
-                                to="/About"
-                                    className={({isActive}) =>
-                                        `block py-2 pr-4 pl-3 duration-200 ${isActive ? "text-orange-700" : "text-gray-700"}border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                                    to="/About"
+                                    className={({ isActive }) =>
+                                        `block py-2 pr-4 pl-3 duration-200 ${isActive ? "text-orange-700" : "text-gray-700"} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
                                     }
                                 >
-                                   About
+                                    About
                                 </NavLink>
                             </li>
 
+
+                            <li>
+                                <NavLink
+                                    to="/ContactUs"
+                                    className={({ isActive }) =>
+                                        `block py-2 pr-4 pl-3 duration-200 ${isActive ? "text-orange-700" : "text-gray-700"} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                                    }
+                                >
+                                    Contact Us
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink
+                                    to="/Github"
+                                    className={({ isActive }) =>
+                                        `block py-2 pr-4 pl-3 duration-200 ${isActive ? "text-orange-700" : "text-gray-700"} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                                    }
+                                >
+                                   Github 
+                                </NavLink>
+                            </li>
 
                         </ul>
                     </div>
