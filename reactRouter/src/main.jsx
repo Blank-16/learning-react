@@ -33,6 +33,7 @@ import Github, { githubInfoLoader } from './components/Github/Github'
 //       {
 //         path: "Github",
 //         element: <Github />
+//         loader: githubInfoLoader
 //       }
 //     ]
 //   }
