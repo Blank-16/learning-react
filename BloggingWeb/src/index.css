@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+
+@utility all{
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+    width: 100%;
+}
