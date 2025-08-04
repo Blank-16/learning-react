@@ -10,7 +10,7 @@ export class Service {
 
         this.client
             .setEndpoint(config.appwriteUrl)
-            .setEndpoint(config.appwriteProjectId);
+            .setProject(config.appwriteProjectId);
 
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
@@ -97,7 +97,7 @@ export class Service {
 
     // file upload methods
 
-    async uploadFIle(file) {
+    async uploadFile(file) {
         try {
             return await this.bucket.createFile(
                 config.appwriteBucketId,
