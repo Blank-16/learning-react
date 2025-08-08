@@ -7,7 +7,9 @@ import Button from "./Button";
 import Input from "./Input";
 import Select from './Select'
 import PostCard from "./PostCard";
-
+import AuthLayout from './AuthLayout'
+import Signup from './Signup'
+import Login from './Login'
 export {
     Header,
     Footer,
@@ -18,5 +20,8 @@ export {
     Input,
     Select,
     PostCard,
+    Login,
+    Signup,
+    AuthLayout
 
 }
