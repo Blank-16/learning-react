@@ -24,7 +24,7 @@ function Login() {
             if (session) {
                 const userData = await authService.getCurrentUser();
                 if (userData) {
-                    dispatch(authLogin(userData));
+                    dispatch(authLogin({ userData }));
                     navigate("/")
                 }
             }
@@ -50,12 +50,12 @@ function Login() {
 
                 <p className='mt-2 text-center text-base text-white/60'>
                     Don&apos;t have any account?&nbsp;
-                    <link
+                    <Link
                         to="/signup"
                         className='font-medium transition-all duration-200 hover:underline'
                     >
                         Sign Up
-                    </link>
+                    </Link>
                 </p>
                 {error && <p className='text-red-600 mt-8 text-center'>
                     {error}</p>}
