@@ -1,4 +1,3 @@
-
 import config from "../config/config.js"
 import { Client, Account, ID } from "appwrite";
 
@@ -15,7 +14,6 @@ export class AuthService {
 
     async createAccount({ email, password, name }) {
         try {
-
             const userAccount = await this.account.create(ID.unique(), email, password, name);
             if (userAccount) {
                 // call another method
@@ -24,8 +22,8 @@ export class AuthService {
                 return userAccount;
             }
         } catch (error) {
-            throw new Error("Appwrite Error in createAccount");
-
+            console.log("Appwrite Service :: createAccount :: error", error);
+            throw error; // Re-throw to handle in UI
         }
     }
 
@@ -33,30 +31,66 @@ export class AuthService {
         try {
             return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
-            throw new Error("Appwrite Error in login");
+            console.log("Appwrite Service :: login :: error", error);
+            throw error; // Re-throw to handle in UI
         }
     }
 
     async getCurrentUser() {
         try {
-            return await this.account.get();
+            // First check if there's an active session
+            const session = await this.account.getSession('current');
+            if (session) {
+                // If session exists, get user account
+                return await this.account.get();
+            }
+            return null;
         } catch (error) {
-            throw new Error("Appwrite Error in getUsername");
+            // Handle specific error cases
+            if (error.code === 401 || error.type === 'general_unauthorized_scope') {
+                // User not authenticated or missing scope
+                console.log("Appwrite service :: getCurrentUser :: User not authenticated");
+                return null;
+            }
+            console.log("Appwrite service :: getCurrentUser :: error", error);
+            return null;
         }
+    }
 
-        return null;
+    // Alternative method to check if user is logged in
+    async isLoggedIn() {
+        try {
+            const session = await this.account.getSession('current');
+            return !!session;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    // Get user info only if authenticated
+    async getUserIfAuthenticated() {
+        try {
+            const isAuthenticated = await this.isLoggedIn();
+            if (isAuthenticated) {
+                return await this.account.get();
+            }
+            return null;
+        } catch (error) {
+            console.log("Appwrite service :: getUserIfAuthenticated :: error", error);
+            return null;
+        }
     }
 
     async logout() {
         try {
             await this.account.deleteSessions();
+            return { success: true };
         } catch (error) {
-            throw new Error("Appwrite service errro logout");
+            console.log("Appwrite service :: logout :: error", error);
+            throw error;
         }
     }
-
 }
 
 const authService = new AuthService();
-
-export default authService 
+export default authService;

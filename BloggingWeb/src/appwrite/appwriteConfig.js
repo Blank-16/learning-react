@@ -1,5 +1,5 @@
 import config from '../config/config.js';
-import { Client, ID, Databases, Storage, Query } from "appwrite";
+import { Client, ID, Databases, Storage, Query, Permission, Role } from "appwrite";
 
 export class Service {
     client = new Client();
@@ -97,12 +97,25 @@ export class Service {
 
     // file upload methods
 
-    async uploadFile(file) {
+    async uploadFile(file, ownerUserId) {
         try {
+            if (!file) {
+                console.error("Appwrite service UploadFile error: No file provided to upload");
+                return false;
+            }
+            if (!config.appwriteBucketId || config.appwriteBucketId === 'undefined') {
+                console.error("Appwrite service UploadFile error: Missing or invalid appwriteBucketId. Check your .env VITE_APPWRITE_BUCKET_ID and restart the dev server.");
+                return false;
+            }
+            const permissions = [
+                Permission.read(Role.any()),
+                ownerUserId ? Permission.write(Role.user(ownerUserId)) : Permission.write(Role.any())
+            ]
             return await this.bucket.createFile(
                 config.appwriteBucketId,
                 ID.unique(),
-                file
+                file,
+                permissions
             )
         } catch (error) {
             console.log("Appwrite service UploadFile error", error);

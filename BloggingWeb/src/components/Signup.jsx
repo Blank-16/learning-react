@@ -11,26 +11,24 @@ function Signup() {
     const navigate = useNavigate()
     const [error, setError] = useState()
     const dispatch = useDispatch()
-    const { register, handleSubmuit } = useForm()
+    const { register, handleSubmit } = useForm()
 
     const signup = async (data) => {
-
         setError("")
         try {
             const userData = await authService.createAccount(data)
             if (userData) {
                 const userData = await authService.getCurrentUser()
                 if (userData) {
-                    dispatch(login(userData))
+                    dispatch(login(userData));
                     navigate("/")
                 }
             }
-
         } catch (error) {
             setError(error.message)
         }
-
     }
+    
     return (
         <div className="flex items-center justify-center">
             <div className={`mx-auto w-full max-w-lg bg-gray-800 rounded-xl p-10 border border-black/10 text-white`}>
@@ -56,7 +54,7 @@ function Signup() {
                 </p>}
 
                 <form
-                    onSubmit={handleSubmuit(signup)}
+                    onSubmit={handleSubmit(signup)}
                 >
                     <div className="space-y-5">
                         <Input
@@ -73,22 +71,21 @@ function Signup() {
                             {...register('email', {
                                 required: true,
                                 validate: {
-                                    matchPattern: (value) => {
-                                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Email address must be a valid address"
-                                    }
+                                    matchPattern: (value) =>
+                                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Email address must be a valid address",
                                 }
                             })}
                         />
                         <Input
-                            labe='password'
+                            label='Password: '
                             type='password'
                             placeholder="Enter your password"
-                            {...required("password", {
+                            {...register("password", {
                                 required: true,
                             })}
                         />
 
-                        <Button 
+                        <Button
                             type="submit"
                             className="w-full"
                         >Create Account</Button>
