@@ -21,7 +21,7 @@ export class Service {
             return await this.databases.createDocument(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
-                slug,
+                ID.unique(),
                 {
                     title,
                     content,
@@ -137,11 +137,26 @@ export class Service {
         }
     }
 
-    async getFilePreview(fileId) {
-        return this.bucket.getFilePreview(
-            config.appwriteBucketId,
-            fileId
-        )
+    getFilePreview(fileId) {
+        try {
+            if (!fileId) {
+                console.error('getFilePreview: No fileId provided');
+                return null;
+            }
+            if (!config.appwriteBucketId) {
+                console.error('getFilePreview: No bucket ID configured');
+                return null;
+            }
+            // Use getFileDownload instead of getFilePreview to avoid transformation errors
+            const result = this.bucket.getFileDownload(
+                config.appwriteBucketId,
+                fileId
+            );
+            return result;
+        } catch (error) {
+            console.error('getFilePreview error:', error);
+            return null;
+        }
     }
 }
 
